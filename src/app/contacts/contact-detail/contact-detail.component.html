@@ -1,13 +1,13 @@
-
+<!-- this file is the child to Contacts component  -->
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-      <h2 class="pull-left panel-heading">Contact Name</h2>
+      <h2 class="pull-left panel-heading">{{ contact.name}}</h2>
       <!-- <span> -->
         <img
-            src=""
+            src="{{contact.imageURL}}"
             class="img-responsive"
-            alt=""
-            style="max-height: 75px;">
+            alt="{{ contact.name}}"
+            style="max-height: 300px;">
         <div class="pull-right">  
         <button class="btn btn-primary" style="margin:8px;" >Edit</button>
         <button class="btn btn-danger" >Delete</button>
@@ -20,8 +20,8 @@
             class="list-group-item clearfix" 
             *ngFor='let contact of contacts'> -->
             <div class="pull-left">
-                <h4 class="list-group-item-heading">Email</h4>
-                <h4 class="list-group-item-heading">Phone</h4>
+                <h4 class="list-group-item-heading">Email: {{ contact.email}}</h4>
+                <h4 class="list-group-item-heading">Phone: {{ contact.phone}}</h4>
             </div>
         <!-- </a>     -->
         <!-- <app-contact-list></app-contact-list>> -->
