@@ -14,8 +14,8 @@
 
 <!-- THEIR CODE  Because they set up their styling different-->
 <cms-header (selectedFeatureEvent)=switchView($event)></cms-header>
-  <div class="container pull-left">
-    <cms-documents *ngIf="selectedFeature === 'document'"></cms-documents>
-    <cms-message-list *ngIf="selectedFeature === 'message'"></cms-message-list>
-    <cms-contacts *ngIf="selectedFeature === 'contact'"></cms-contacts>
+  <div class="container pull-left" [ngSwitch]="selectedFeature">
+    <cms-documents *ngSwitchCase=" 'document'"></cms-documents>
+    <cms-message-list *ngSwitchCase=" 'message'"></cms-message-list>
+    <cms-contacts *ngSwitchDefault=" 'contact'"></cms-contacts>
   </div>
