@@ -15,6 +15,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
+import { ContactService } from './contacts/contact.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
