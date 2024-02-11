@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Document } from './document.model';
+import { DocumentService } from './document.service';
 
 @Component({
   selector: 'cms-documents',
@@ -7,6 +8,19 @@ import { Document } from './document.model';
   styleUrl: './documents.component.css'
 })
 export class DocumentsComponent {
-    selectedDocument: Document;
+
+  // INITIALIZE 
+  selectedDocument: Document;
+  
+  // CONSTRUCTOR 
+  constructor(private documentService: DocumentService) {}
+  
+
+  // METHODS 
+  ngOnInit(): void {
+    this.documentService.documentSelectedEvent.subscribe((document: Document) => {
+      this.selectedDocument = document;
+    })
+  }
 
 }
