@@ -4,7 +4,7 @@ export const MOCKCONTACTS: Contact[] = [
   // individual contacts
   // index 0
   {
-    id: '0',
+    id: '100',
     name: 'Fred Flintstone',
     email: 'flinstone@byui.edu',
     phone: '208-496-0000',

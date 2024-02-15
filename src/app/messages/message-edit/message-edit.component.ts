@@ -17,17 +17,17 @@ export class MessageEditComponent {
   // eventEmitter to output the new message object up to the MessageListComponent 
   @Output() addMessageEvent = new EventEmitter<Message>();
 
-  currentSender: string = 'Shonda';
+  // currentSender: string = 'Shonda';
 
   constructor(private messageService: MessageService) {}
 
   // METHODS 
 
   onSendMessage() {
-    const msgId = this.messageService.getNextId();
+    // const msgId = this.messageService.getNextId();
     const msgSubject = this.subjectInputRef.nativeElement.value;
     const msgText= this.msgTextInputRef.nativeElement.value;
-    const newMessage = new Message(msgId, msgSubject, msgText, this.currentSender);
+    const newMessage = new Message('1', msgSubject, msgText, '100');
     this.messageService.addMessage(newMessage);
   }
 
