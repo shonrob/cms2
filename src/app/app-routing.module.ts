@@ -4,15 +4,15 @@ import { DocumentsComponent } from "./documents/documents.component";
 import { MessagesComponent } from "./messages/messages.component";
 import { ContactsComponent } from "./contacts/contacts.component";
 
-const appRoutes: Routes = [
-    {path: '', redirectTo: '/documents', pathMatch: 'full'},
-    {path: 'documents', component: DocumentsComponent},
-    {path: 'messages', component: MessagesComponent},
-    {path: 'contacts', component: ContactsComponent}
-]
+const appRoutes: Routes = []
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
+    imports: [RouterModule.forRoot([
+        {path: '', redirectTo: '/documents', pathMatch: 'full'},
+        {path: 'documents', component: DocumentsComponent},
+        {path: 'messages', component: MessagesComponent},
+        {path: 'contacts', component: ContactsComponent}
+    ])],
 
     exports: [RouterModule]
 })
