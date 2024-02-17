@@ -10,6 +10,7 @@ import { DocumentService } from '../document.service';
 export class DocumentListComponent {
   // @Output() selectedDocumentEvent = new EventEmitter<Document>();
 
+
   // INITIALIZE DOCUMENT ARRAY
   documents: Document[] = []
 
@@ -21,8 +22,8 @@ export class DocumentListComponent {
       this.documents = this.documentService.getDocuments();
     }
 
-  onSelectedDocument(document: Document) {
-    this.documentService.documentSelectedEvent.emit(document);
-  }
+  // onSelectedDocument(document: Document) {
+  //   this.documentService.documentSelectedEvent.emit(document);
+  // }
 
 }

@@ -25,6 +25,9 @@ export class DocumentService {
     return this.documents.slice();
   }
 
+  getDocument(index: number) {
+    return this.documents[index];
+  }
   //method to get a single document
   getaDocument(id: string): Document {
     return this.documents.find((theDocument) => theDocument.id === id);

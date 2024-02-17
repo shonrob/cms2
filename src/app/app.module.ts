@@ -42,6 +42,10 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
+  exports: [
+    BrowserModule
+  ]
 })
 export class AppModule { }
