@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Message } from '../message.model';
+import { MessageService } from '../message.service';
 
 
 @Component({
@@ -16,16 +17,18 @@ export class MessageEditComponent {
   // eventEmitter to output the new message object up to the MessageListComponent 
   @Output() addMessageEvent = new EventEmitter<Message>();
 
-  currentSender: string = 'Shonda';
+  // currentSender: string = 'Shonda';
 
-  onSendMessage(){
+  constructor(private messageService: MessageService) {}
 
-    const subject = this.subjectInputRef.nativeElement.value;
+  // METHODS 
+
+  onSendMessage() {
+    // const msgId = this.messageService.getNextId();
+    const msgSubject = this.subjectInputRef.nativeElement.value;
     const msgText= this.msgTextInputRef.nativeElement.value;
-    
-    // const sender = this.senderInput.nativeElement.value;
-    const newMessage = new Message('1', subject, msgText, this.currentSender );
-    this.addMessageEvent.emit(newMessage);
+    const newMessage = new Message('1', msgSubject, msgText, '100');
+    this.messageService.addMessage(newMessage);
   }
 
   onClear() {
@@ -35,3 +38,15 @@ export class MessageEditComponent {
     
   }
 }
+
+
+
+  // onSendMessage(){
+
+  //   const subject = this.subjectInputRef.nativeElement.value;
+  //   const msgText= this.msgTextInputRef.nativeElement.value;
+    
+  //   // const sender = this.senderInput.nativeElement.value;
+  //   const newMessage = new Message('1', subject, msgText, this.currentSender );
+  //   this.addMessageEvent.emit(newMessage);
+  // }
