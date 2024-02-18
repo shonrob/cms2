@@ -17,7 +17,8 @@ export class DocumentService {
 
   // EVENTS 
   // Create and event for docService 
-  documentSelectedEvent = new EventEmitter<Document>()
+  documentSelectedEvent = new EventEmitter<Document[]>()
+  documentChangedEvent = new EventEmitter<Document[]>()
 
   // METHODS 
   //method to get a copy of all the documents
@@ -32,6 +33,18 @@ export class DocumentService {
   getaDocument(id: string): Document {
     return this.documents.find((theDocument) => theDocument.id === id);
   }
+
+  deleteDocument(document: Document) {
+    if (!document) {
+       return;
+    }
+    const pos = this.documents.indexOf(document);
+    if (pos < 0) {
+       return;
+    }
+    this.documents.splice(pos, 1);
+    this.documentChangedEvent.emit(this.documents.slice());
+ }
 
 
 }

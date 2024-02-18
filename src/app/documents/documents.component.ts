@@ -20,6 +20,10 @@ export class DocumentsComponent {
   ngOnInit(): void {
     this.documentService.documentSelectedEvent.subscribe((document: Document) => {
       this.selectedDocument = document;
+
+    this.documentService.documentChangedEvent.subscribe((document1: Document) => {
+      this.selectedDocument = document1;
+    })
     })
   }
 

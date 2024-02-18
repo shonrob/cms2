@@ -12,7 +12,8 @@ export class DocumentListComponent {
 
 
   // INITIALIZE DOCUMENT ARRAY
-  documents: Document[] = []
+  documents: Document[] = [];
+  documentId: string = '';
 
     // CONSTRUCTOR 
   constructor(private documentService: DocumentService) {}
@@ -20,6 +21,8 @@ export class DocumentListComponent {
     // METHODS 
   ngOnInit(){
       this.documents = this.documentService.getDocuments();
+
+      
     }
 
   // onSelectedDocument(document: Document) {

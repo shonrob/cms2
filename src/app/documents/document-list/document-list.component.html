@@ -10,6 +10,7 @@
   <div class="panel-body">
     <div class="center-panel">
       <cms-document-item
+        routerLinkActive="active" 
         *ngFor="let document of documents"
         [document] = "document"
       ></cms-document-item>
