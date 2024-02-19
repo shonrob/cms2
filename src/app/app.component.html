@@ -1,21 +1,13 @@
-<!-- THIS IS THE OVERALL HTML FILE THAT EVERYTHING FILTERS THROUGH  -->
-
-<!-- MY CODE  -->
-<!-- <cms-header (selectedFeatureEvent)="switchView($event)"></cms-header>
+<cms-header></cms-header>
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <cms-documents *ngIf="selectedFeature === 'document'"></cms-documents>
-      <cms-contacts *ngIf="selectedFeature === 'contact'"></cms-contacts>
-      <cms-messages *ngIf="selectedFeature === 'message'"></cms-messages>
+   <div class="row">
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </div>
-</div> -->
+</div>
 
-<!-- THEIR CODE  Because they set up their styling different-->
-<cms-header (selectedFeatureEvent)=switchView($event)></cms-header>
-  <div class="container pull-left" [ngSwitch]="selectedFeature">
-    <cms-documents *ngSwitchCase=" 'document'"></cms-documents>
-    <cms-message-list *ngSwitchCase=" 'message'"></cms-message-list>
-    <cms-contacts *ngSwitchCase=" 'contact'"></cms-contacts>
-  </div>
+
+
+
+

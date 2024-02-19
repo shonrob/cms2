@@ -31,7 +31,7 @@ export class MessageService {
     this.messageChangedEvent.emit(this.messages.slice());
   }
 
-  getNextId(): string {
-    return (this.messages.length > 1)? ''+(Number(this.messages[this.messages.length - 1].id) + 1) : '0';
-  }
+  // getNextId(): string {
+  //   return (this.messages.length > 1)? ''+(Number(this.messages[this.messages.length - 1].id) + 1) : '0';
+  // }
 }

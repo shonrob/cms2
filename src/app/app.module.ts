@@ -15,7 +15,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
-import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
+import { AppRoutingModule } from './app-Routing.module';
 // import { ContactService } from './contacts/contact.service';
 
 @NgModule({
@@ -33,12 +33,14 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
     MessagesComponent,
     MessageItemComponent,
     MessageEditComponent,
-    MessageListComponent,
-    DocumentEditComponent
+    MessageListComponent
   ],
+  
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

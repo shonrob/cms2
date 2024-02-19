@@ -15,26 +15,14 @@
       <!-- Collect the nav links, forms, and other content for toggling  [ngClass] directive helps with the responsiveness of the nav bar-->
       <div class="collapse navbar-collapse" [ngClass]="{'in' : isNavbarCollapsed }" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active">
-            <a href="#"
-              (click)="onSelected('document')"
-              >Documents 
-              <span 
-                class="sr-only"
-              >(current)</span>
-            </a>
+          <li routerLinkActive="active">
+            <a routerLink="/document">Documents</a>
           </li>
-          <li>
-            <a href="#"
-              (click)="onSelected('message')"  
-              >Messages
-            </a>
+          <li routerLinkActive="active">
+            <a routerLink="/message">Messages</a>
           </li>
-          <li>
-            <a href="#"
-               (click)="onSelected('contact')" 
-            >Contacts
-            </a>
+          <li routerLinkActive="active">
+            <a routerLink="/contact">Contacts</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
