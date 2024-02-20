@@ -31,8 +31,11 @@ export class ContactService  {
 
   //  This method returns a contact that has a matching id. 
    getaContact(id: string): Contact {
-    return this.contacts.find((theContact) => theContact.id === id);
+    // console.log(this.contacts);
+    // console.log(id);
 
+    return this.contacts.find((theContact) => theContact.id === id);
+  
    }
 
 // Method to delete a contact 

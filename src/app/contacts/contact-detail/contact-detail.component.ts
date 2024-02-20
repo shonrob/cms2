@@ -20,7 +20,10 @@ export class ContactDetailComponent {
     this.route.params.subscribe((params: Params) => {
       this.id = params.id;
       this.contact = this.contactService.getaContact(this.id);
-    });
+      // console.log(params);
+      console.log(params.id);
+      console.log(this.id);
+    }); 
   }
 
   // onDelete() {
