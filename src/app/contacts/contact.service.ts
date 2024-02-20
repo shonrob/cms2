@@ -50,6 +50,7 @@ export class ContactService  {
     this.contacts.splice(pos, 1);
     this.contactChangedEvent.emit(this.contacts.slice());
    }
+
   // onSelected(contact: Contact) {
   //   this.contactSelectedEvent.emit(contact);
   // }

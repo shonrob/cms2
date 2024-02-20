@@ -26,10 +26,10 @@ export class ContactDetailComponent {
     }); 
   }
 
-  // onDelete() {
-  //   this.contactService.deleteContact(this.contact);
-  //   this.router.navigate(this.contact.id);
-  // }
+  onDelete() {
+    this.contactService.deleteContact(this.contact);
+    this.router.navigate(['/contacts']);
+  }
 }
 
-// (['/contacts'])
+
