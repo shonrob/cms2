@@ -12,6 +12,7 @@ export class DocumentListComponent {
 
   // INITIALIZE DOCUMENT ARRAY
   documents: Document[] = []
+  documentId: string = '';
 
     // CONSTRUCTOR 
   constructor(private documentService: DocumentService) {}
@@ -21,8 +22,8 @@ export class DocumentListComponent {
       this.documents = this.documentService.getDocuments();
     }
 
-  onSelectedDocument(document: Document) {
-    this.documentService.documentSelectedEvent.emit(document);
-  }
+  // onSelectedDocument(document: Document) {
+  //   this.documentService.documentSelectedEvent.emit(document);
+  // }
 
 }
