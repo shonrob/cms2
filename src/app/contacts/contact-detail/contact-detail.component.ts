@@ -16,7 +16,7 @@ export class ContactDetailComponent {
               private router: Router,
               private route: ActivatedRoute) {}
 
-  ngOnInIt() {
+  ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = params.id;
       this.contact = this.contactService.getaContact(this.id);
