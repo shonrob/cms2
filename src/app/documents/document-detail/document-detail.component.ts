@@ -26,19 +26,25 @@ export class DocumentDetailComponent {
               ){}
 
   ngOnInit(){
+    this.nativeWindow = this.windowRefService.getNativeWindow();
     this.route.params.subscribe((params: Params) => {
       this.id = params.id;
       this.document = this.documentService.getaDocument(this.id);
     });
   }
 
+// WHEN THE VIEW BUTTON IS CLICKED FROM DOC-DETAILS
 onView() {
-  this.nativeWindow = this.windowRefService.getNativeWindow();
   if (this.document.url) {
     this.nativeWindow.open(this.document.url);
   }
 }
 
+// WHEN THE DELETE BUTTON IS CLICKED FROM DOC-DETAILS
+onDelete() {
+  this.documentService.deleteDocument(this.document);
+  this.router.navigateByUrl(this.document.url);
+}
 
   
 } 
