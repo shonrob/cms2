@@ -17,7 +17,11 @@ export class ContactService  {
    }
 
   // EVENTS 
+  // Create an event for contact service 
   contactSelectedEvent = new EventEmitter<Contact>()
+
+  // Change a contact 
+  contactChangedEvent = new EventEmitter<Contact[]>()
 
   //  METHODS 
    //This method returns a copy of the contact list
@@ -28,8 +32,21 @@ export class ContactService  {
   //  This method returns a contact that has a matching id. 
    getaContact(id: string): Contact {
     return this.contacts.find((theContact) => theContact.id === id);
+
    }
 
+// Method to delete a contact 
+   deleteContact(contact: Contact) {
+    if(!contact) {
+      return;
+    }
+    const pos = this.contacts.indexOf(contact);
+    if(pos < 0) {
+      return;
+    }
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
+   }
   // onSelected(contact: Contact) {
   //   this.contactSelectedEvent.emit(contact);
   // }

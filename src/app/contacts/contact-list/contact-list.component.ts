@@ -12,6 +12,7 @@ export class ContactListComponent  {
 
   // INITIALIZE CONTACT ARRAY
   contacts: Contact[] = [];
+  contactId: string = '';
 
   // CONSTRUCTOR 
   constructor(private contactService: ContactService) {}
@@ -20,11 +21,14 @@ export class ContactListComponent  {
   // METHODS 
   ngOnInit(): void {
     this.contacts = this.contactService.getContacts();
+    this.contactService.contactChangedEvent.subscribe((contact: Contact[]) => {
+      this.contacts = contact;
+    })
   }
 
-  OnSelectedContact(contact: Contact) {
-    this.contactService.contactSelectedEvent.emit(contact);
-  }
+  // OnSelectedContact(contact: Contact) {
+  //   this.contactService.contactSelectedEvent.emit(contact);
+  // }
 
 
 

@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component} from '@angular/core';
 import { Contact } from '../contact.model';
+import { ContactService } from '../contact.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'cms-contact-detail',
@@ -7,14 +9,24 @@ import { Contact } from '../contact.model';
   styleUrl: './contact-detail.component.css'
 })
 export class ContactDetailComponent {
-  @Input() contact: Contact;
-  // contacts: Contact[] = [
-  //   new Contact('1', 'R. Kent Jackson', 'jacksonk@byui.edu', '208-496-3771', '../../assets/images/jacksonk.jpg', null),
-  //   new Contact('2', 'Rex Barzee', 'barzeer@byu.edu', '208-497-3768', '../../assets/images/barzeer.jpg', null)
-  // ];
+  contact: Contact;
+  id: string;
 
-  // constructor() {}
+  constructor(private contactService: ContactService,
+              private router: Router,
+              private route: ActivatedRoute) {}
 
-  // ngOnInIt() {}
+  ngOnInIt() {
+    this.route.params.subscribe((params: Params) => {
+      this.id = params.id;
+      this.contact = this.contactService.getaContact(this.id);
+    });
+  }
+
+  // onDelete() {
+  //   this.contactService.deleteContact(this.contact);
+  //   this.router.navigate(this.contact.id);
+  // }
 }
 
+// (['/contacts'])
