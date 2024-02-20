@@ -14,7 +14,7 @@ import { DocumentService } from '../document.service';
 })
 export class DocumentDetailComponent {
   document: Document;
-  id: number;
+  id: string;
 
   // CONSTRUCTOR 
   constructor(private documentService: DocumentService,
@@ -22,10 +22,10 @@ export class DocumentDetailComponent {
               private router: Router, 
               ){}
 
-  NgOnInit(){
+  ngOnInit(){
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
-      this.document = this.documentService.getDocument(this.id);
+      this.id = params.id;
+      this.document = this.documentService.getaDocument(this.id);
     });
 
   }

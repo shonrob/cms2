@@ -25,14 +25,14 @@ export class DocumentService {
     return this.documents.slice();
   }
 
-  //method to get a single document
+  // method to get a single document
   getaDocument(id: string): Document {
     return this.documents.find((theDocument) => theDocument.id === id);
   }
 
-  getDocument(index: number) {
-    return this.documents[index];
-  }
+  // getDocument(index: number) {
+  //   return this.documents[index];
+  // }
 
 
 }
