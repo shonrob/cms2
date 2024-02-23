@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cms-contact-list',
@@ -8,11 +9,13 @@ import { ContactService } from '../contact.service';
   styleUrl: './contact-list.component.css',
 })
 
-export class ContactListComponent  {
+export class ContactListComponent implements OnInit, OnDestroy {
 
   // INITIALIZE CONTACT ARRAY
   contacts: Contact[] = [];
   contactId: string = '';
+
+  private clSubscription: Subscription;
 
   // CONSTRUCTOR 
   constructor(private contactService: ContactService) {}
@@ -21,22 +24,14 @@ export class ContactListComponent  {
   // METHODS 
   ngOnInit(): void {
     this.contacts = this.contactService.getContacts();
-    this.contactService.contactChangedEvent.subscribe((contact: Contact[]) => {
+    this.clSubscription = this.contactService.contactChangedEvent.subscribe((contact: Contact[]) => {
       this.contacts = contact;
     })
   }
 
-  // OnSelectedContact(contact: Contact) {
-  //   this.contactService.contactSelectedEvent.emit(contact);
-  // }
-
-
+  ngOnDestroy(): void {
+    this.clSubscription.unsubscribe();
+  }
+  
 
 }
-
-  // @Output() selectedContactEvent = new EventEmitter<Contact>();
-  // line 17 is a method 
-  // onSelected(contact: Contact) {
-  //   // inside is the call...where the object contact is an argurment that is called to show up when clicked.
-  //   // this.selectedContactEvent.emit(contact);
-  // }

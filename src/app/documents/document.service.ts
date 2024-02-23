@@ -1,6 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Document } from './document.model';
+import { Subject } from 'rxjs';
+import { NgFor } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +10,22 @@ import { Document } from './document.model';
 export class DocumentService {
 
   //Initialize the array
-  private documents: Document[] = []
+  private documents: Document[] = [];
+  private maxDocumentId: number;
 
   //create the constructor
   constructor() { 
     this.documents = MOCKDOCUMENTS;
+    this.maxDocumentId = this.getMaxId();
   }
+  // Create a new class variable called maxDocumentId of the number data type at the top of the class. 
+  // Inside the constructor() method of the DocumentService class call the getMaxId() function and 
+  // assign the value returned to the maxDocumentId class variable.
+  // constructor() {
+  //     this.documents = MOCKDOCUMENTS;
+  //     this.maxDocumentId = this.getMaxId();
+  // }
+
 
   // EVENTS 
   // Create and event for docService 
@@ -22,7 +34,23 @@ export class DocumentService {
   // Changing a document like for the delete button
   documentChangedEvent = new EventEmitter<Document[]>()
 
+  documentListChangedEvent = new Subject<Document[]>() 
+
   // METHODS 
+
+// method to get the maxId 
+  getMaxId() {
+    let maxId = 0;
+    
+    this.documents.forEach(doc => {
+      let currentId = parseInt(doc.id);
+      if (currentId > maxId) {
+        maxId = currentId;
+      }
+      return maxId;
+    });
+    }
+
   //method to get a copy of all the documents
   getDocuments(): Document[] {
     return this.documents.slice();
@@ -43,11 +71,22 @@ export class DocumentService {
       return;
     }
     this.documents.splice(pos, 1);
-    this.documentChangedEvent.emit(this.documents.slice());
+    const documentsListClone = this.documents.slice();
+    this.documentChangedEvent.next(documentsListClone);
   }
-  // getDocument(index: number) {
-  //   return this.documents[index];
-  // }
 
-
-}
+  // method to update a document 
+  updateDocument(originalDocument: Document, newDocument: Document) {
+    if(!originalDocument || !newDocument) {
+      return
+    } 
+      const pos = this.documents.indexOf(originalDocument)
+      if(pos < 0 ){
+        return
+      }
+      newDocument.id = originalDocument.id
+      this.documents[pos] = newDocument;
+      const documentsListClone = this.documents.slice();
+      this.documentListChangedEvent.next(documentsListClone);
+  }
+ }
