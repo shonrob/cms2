@@ -12,7 +12,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
 
   // INITIALIZE 
   selectedDocument: Document;
-  
   private subscription: Subscription;
 
   // CONSTRUCTOR 

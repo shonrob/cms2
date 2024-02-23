@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DocumentService } from '../document.service';
 
 @Component({
   selector: 'cms-document-edit',
@@ -7,5 +8,12 @@ import { Component } from '@angular/core';
 })
 export class DocumentEditComponent {
 
+constructor( private documentService: DocumentService) {
+
+}
+
+// addNewDocument() {
+//   this.documentService.addDocument()
+// }
 
 }

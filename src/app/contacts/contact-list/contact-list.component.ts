@@ -33,5 +33,4 @@ export class ContactListComponent implements OnInit, OnDestroy {
     this.clSubscription.unsubscribe();
   }
   
-
 }

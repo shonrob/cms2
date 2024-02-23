@@ -5,51 +5,41 @@ import { Subject } from 'rxjs';
 import { NgFor } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DocumentService {
-
   //Initialize the array
   private documents: Document[] = [];
   private maxDocumentId: number;
 
   //create the constructor
-  constructor() { 
+  constructor() {
     this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
   }
-  // Create a new class variable called maxDocumentId of the number data type at the top of the class. 
-  // Inside the constructor() method of the DocumentService class call the getMaxId() function and 
-  // assign the value returned to the maxDocumentId class variable.
-  // constructor() {
-  //     this.documents = MOCKDOCUMENTS;
-  //     this.maxDocumentId = this.getMaxId();
-  // }
 
-
-  // EVENTS 
-  // Create and event for docService 
-  documentSelectedEvent = new EventEmitter<Document>()
+  // EVENTS
+  // Create and event for docService
+  documentSelectedEvent = new EventEmitter<Document>();
 
   // Changing a document like for the delete button
-  documentChangedEvent = new EventEmitter<Document[]>()
+  documentChangedEvent = new EventEmitter<Document[]>();
 
-  documentListChangedEvent = new Subject<Document[]>() 
+  documentListChangedEvent = new Subject<Document[]>();
 
-  // METHODS 
+  // METHODS
 
-// method to get the maxId 
+  // method to get the maxId
   getMaxId() {
     let maxId = 0;
-    
-    this.documents.forEach(doc => {
+    this.documents.forEach((doc) => {
       let currentId = parseInt(doc.id);
       if (currentId > maxId) {
         maxId = currentId;
       }
-      return maxId;
     });
-    }
+    return maxId;
+  }
 
   //method to get a copy of all the documents
   getDocuments(): Document[] {
@@ -61,13 +51,26 @@ export class DocumentService {
     return this.documents.find((theDocument) => theDocument.id === id);
   }
 
-  // method to delete a single document 
-  deleteDocument(document: Document){
-    if(!document) {
+  // method to add a new document 
+  addDocument(newDocument: Document){
+    if(!newDocument){
+      return
+    }
+    this.maxDocumentId++;
+    newDocument.id = this.maxDocumentId.toString();
+    this.documents.push(newDocument);
+    const documentsListClone = this.documents.slice();
+    this.documentListChangedEvent.next(documentsListClone);
+
+  }
+
+  // method to delete a single document
+  deleteDocument(document: Document) {
+    if (!document) {
       return;
     }
     const pos = this.documents.indexOf(document);
-    if(pos < 0) {
+    if (pos < 0) {
       return;
     }
     this.documents.splice(pos, 1);
@@ -75,18 +78,18 @@ export class DocumentService {
     this.documentChangedEvent.next(documentsListClone);
   }
 
-  // method to update a document 
+  // method to update a document
   updateDocument(originalDocument: Document, newDocument: Document) {
-    if(!originalDocument || !newDocument) {
-      return
-    } 
-      const pos = this.documents.indexOf(originalDocument)
-      if(pos < 0 ){
-        return
-      }
-      newDocument.id = originalDocument.id
-      this.documents[pos] = newDocument;
-      const documentsListClone = this.documents.slice();
-      this.documentListChangedEvent.next(documentsListClone);
+    if (!originalDocument || !newDocument) {
+      return;
+    }
+    const pos = this.documents.indexOf(originalDocument);
+    if (pos < 0) {
+      return;
+    }
+    newDocument.id = originalDocument.id;
+    this.documents[pos] = newDocument;
+    const documentsListClone = this.documents.slice();
+    this.documentListChangedEvent.next(documentsListClone);
   }
- }
+}
