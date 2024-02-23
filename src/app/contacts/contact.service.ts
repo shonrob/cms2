@@ -57,7 +57,7 @@ export class ContactService  {
   
    }
 
-  //  method to add a new contact 
+  //  method to add a new contact CALLED in the CONTACTEDITCOMPONENT WHEN SAVING CONTACT
    addContact(newContact: Contact) {
     if(!newContact) {
       return 
@@ -69,7 +69,7 @@ export class ContactService  {
     this.contactListChangedEvent.next(contactListClone);
    }
 
-// Method to delete a contact 
+// Method to delete a contact CALLED IN THE CONTACTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
    deleteContact(contact: Contact) {
     if(!contact) {
       return;
@@ -83,7 +83,7 @@ export class ContactService  {
     this.contactChangedEvent.next(contactsListClone);
    }
 
-  //  method to update contacts 
+  //  method to update contacts CALLED in the CONTACTEDITCOMPONENT WHEN SAVING CHANGES
    updateContact(orginalContact: Contact, newContact: Contact) {
     if(!orginalContact || !newContact) {
       return;

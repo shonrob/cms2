@@ -51,7 +51,7 @@ export class DocumentService {
     return this.documents.find((theDocument) => theDocument.id === id);
   }
 
-  // method to add a new document 
+  // method to add a new document CALLED in the DOCUMENTEDITCOMPONENT WHEN SAVING DOCUMENT
   addDocument(newDocument: Document){
     if(!newDocument){
       return
@@ -61,10 +61,9 @@ export class DocumentService {
     this.documents.push(newDocument);
     const documentsListClone = this.documents.slice();
     this.documentListChangedEvent.next(documentsListClone);
-
   }
 
-  // method to delete a single document
+  // method to delete a single document CALLED IN THE DOCUMENTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
   deleteDocument(document: Document) {
     if (!document) {
       return;
@@ -78,7 +77,7 @@ export class DocumentService {
     this.documentChangedEvent.next(documentsListClone);
   }
 
-  // method to update a document
+  // method to update a document CALLED in the DOCUMENTEDITCOMPONENT WHEN SAVING CHANGES
   updateDocument(originalDocument: Document, newDocument: Document) {
     if (!originalDocument || !newDocument) {
       return;
