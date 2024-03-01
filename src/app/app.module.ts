@@ -1,5 +1,12 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { BrowserModule } from '@angular/platform-browser';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+import { AppRoutingModule } from './app-Routing.module';
+
+
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
@@ -15,10 +22,11 @@ import { MessagesComponent } from './messages/messages.component';
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
-import { AppRoutingModule } from './app-Routing.module';
+
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
-import { FormsModule } from '@angular/forms';
+
+
 // import { ContactService } from './contacts/contact.service';
 
 @NgModule({
@@ -44,7 +52,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
+
+
   ],
 
   providers: [],

@@ -55,7 +55,7 @@ onSubmit(form: NgForm) {
     value.description,
     value.url
   );
-  if(this.editMode = true) {
+  if(this.editMode) {
     this.documentService.updateDocument(this.originalDocument, newDocument);
   } else {
       this.documentService.addDocument(newDocument);

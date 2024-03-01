@@ -15,7 +15,7 @@ export class ContactEditComponent implements OnInit {
   orginalContact: Contact;
   contact: Contact;
 
-  groupContacts = Contact[] = [];
+  groupContacts: Contact[] = [];
   editMode: boolean = false;
   id: string;
 
@@ -38,8 +38,9 @@ ngOnInit(): void {
       return;
     }
     this.editMode = true;
-    if(this.contact = this.groupContacts) {
-        this.contact = JSON.parse(JSON.stringify(this.groupContacts));
+    this.contact = JSON.parse(JSON.stringify(this.orginalContact));
+    if(!!this.contact.group){
+        this.groupContacts = this.contact.group;
     }
   });
 }
@@ -54,7 +55,7 @@ onSubmit(form: NgForm) {
     value.imageUrl,
     value.groupContacts
   );
-  if(this.editMode = true) {
+  if(this.editMode) {
     this.contactService.updateContact(this.orginalContact, newContact);
   }
   this.router.navigate(['/contacts'])
