@@ -18,6 +18,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { AppRoutingModule } from './app-Routing.module';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { FormsModule } from '@angular/forms';
 // import { ContactService } from './contacts/contact.service';
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
   
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
 
   providers: [],
