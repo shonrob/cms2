@@ -43,7 +43,7 @@ onView() {
 // WHEN THE DELETE BUTTON IS CLICKED FROM DOC-DETAILS
 onDelete() {
   this.documentService.deleteDocument(this.document);
-  this.router.navigateByUrl(this.document.url);
+  this.router.navigateByUrl('/documents');
 }
 
   

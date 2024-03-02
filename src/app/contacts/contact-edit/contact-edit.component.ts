@@ -12,7 +12,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class ContactEditComponent implements OnInit {
 
   // VARIABLES 
-  orginalContact: Contact;
+  originalContact: Contact;
   contact: Contact;
 
   groupContacts: Contact[] = [];
@@ -33,12 +33,12 @@ ngOnInit(): void {
       this.editMode = false;
       return;
     }
-    this.orginalContact = this.contactService.getaContact('id');
-    if(this.orginalContact === undefined || this.orginalContact === null) {
+    this.originalContact = this.contactService.getaContact(id);
+    if(this.originalContact === undefined || this.originalContact === null) {
       return;
     }
     this.editMode = true;
-    this.contact = JSON.parse(JSON.stringify(this.orginalContact));
+    this.contact = JSON.parse(JSON.stringify(this.originalContact));
     if(!!this.contact.group){
         this.groupContacts = this.contact.group;
     }
@@ -56,7 +56,9 @@ onSubmit(form: NgForm) {
     value.groupContacts
   );
   if(this.editMode) {
-    this.contactService.updateContact(this.orginalContact, newContact);
+    this.contactService.updateContact(this.originalContact, newContact);
+  } else {
+    this.contactService.addContact(newContact);
   }
   this.router.navigate(['/contacts'])
 }

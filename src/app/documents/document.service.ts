@@ -25,7 +25,7 @@ export class DocumentService {
   // Changing a document like for the delete button
   documentChangedEvent = new EventEmitter<Document[]>();
 
-  documentListChangedEvent = new Subject<Document[]>();
+  // documentListChangedEvent = new Subject<Document[]>();
 
   // METHODS
 
@@ -60,7 +60,7 @@ export class DocumentService {
     newDocument.id = this.maxDocumentId.toString();
     this.documents.push(newDocument);
     const documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    this.documentChangedEvent.next(documentsListClone);
   }
 
   // method to delete a single document CALLED IN THE DOCUMENTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
@@ -89,6 +89,6 @@ export class DocumentService {
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
     const documentsListClone = this.documents.slice();
-    this.documentListChangedEvent.next(documentsListClone);
+    this.documentChangedEvent.next(documentsListClone);
   }
 }

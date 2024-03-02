@@ -27,7 +27,7 @@ export class ContactService  {
   // Change a contact 
   contactChangedEvent = new EventEmitter<Contact[]>()
 
-  contactListChangedEvent = new Subject<Contact[]>()
+  // contactListChangedEvent = new Subject<Contact[]>()
 
   //  METHODS 
 
@@ -66,7 +66,7 @@ export class ContactService  {
     newContact.id = this.maxContactId.toString();
     this.contacts.push(newContact);
     const contactListClone = this.contacts.slice();
-    this.contactListChangedEvent.next(contactListClone);
+    this.contactChangedEvent.next(contactListClone);
    }
 
 // Method to delete a contact CALLED IN THE CONTACTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
@@ -95,7 +95,7 @@ export class ContactService  {
     newContact.id = orginalContact.id;
     this.contacts[pos] = newContact;
     const contactsListClone = this.contacts.slice();
-    this.contactListChangedEvent.next(contactsListClone);
+    this.contactChangedEvent.next(contactsListClone);
    }
 }
 
