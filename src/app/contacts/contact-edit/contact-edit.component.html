@@ -30,7 +30,7 @@
               [ngModel]="contact?.email"
               #email="ngModel"
               required
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+              pattern="[^\s@]+@[^\s@]+\.[^\s@]+">
           </div>
         </div>
         <div *ngIf="!email.valid && email.touched">
@@ -73,16 +73,22 @@
         <div class="alert alert-danger" *ngIf="!name.valid && name.untouched && !email.valid && email.untouched">
           <p>The Name and Email fields are Required</p>
         </div>
-        <div class="row">
+        <div class="row drop-area"
+            cdkDropList
+            [cdkDropListData]="groupContacts"
+            (cdkDropListDropped)="onDrop($event)">
           <div class="form-group">
-            <label for="groupList">Group Contacts:</label>
+            <div class="alert alert-danger errorMessage" *ngIf="errorMessage != '' ">
+              <p>{{ errorMessage }}</p>
+            </div>
+            <label
+              class="groupContactHeading" 
+              for="groupList">Group Contacts:</label>
   
-            <div  class="row drop-area" 
+            <div   
                   id="groupList"
                   style="min-height: 3rem;" 
-                  cdkDropList
-                  [cdkDropListData]="groupContacts"
-                  (cdkDropListDropped)="onDrop($event)">
+                  >
               <div *ngFor="let contact of groupContacts; let i = index">
                 <div>
                   <cms-contact-item 

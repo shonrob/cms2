@@ -32,3 +32,10 @@
     margin-left: 3rem;
   }
   
+  .groupContactHeading {
+    margin: 1em;
+}
+
+.errorMessage {
+  margin: .75em;
+}

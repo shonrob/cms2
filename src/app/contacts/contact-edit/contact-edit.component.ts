@@ -19,6 +19,7 @@ export class ContactEditComponent implements OnInit {
   groupContacts: Contact[] = [];
   editMode: boolean = false;
   id: string;
+  errorMessage: string = '';
 
 
 constructor ( private contactService: ContactService,
@@ -56,6 +57,8 @@ onSubmit(form: NgForm) {
     value.imageUrl,
     value.groupContacts
   );
+  // console.log(newContact.group);
+  newContact.group = this.groupContacts;
   if(this.editMode) {
     this.contactService.updateContact(this.originalContact, newContact);
   } else {
@@ -69,25 +72,39 @@ onCancel(){
 }
 
 onDrop(event : CdkDragDrop<Contact[]>) {
-  if(event.previousContainer !==event.container) {
+  if(!this.isInvalidContact(event.item.data) && event.previousContainer !==event.container) {
     const contactCopy = {...event.item.data };
     this.groupContacts.push(contactCopy);
   }
+  // console.log(this.groupContacts);
 }
 
-// isInvalidContact(newContact: Contact) {
-//   if(!newContact) {
-//     return true;
-//   }
-//   if(this.contact && newContact.id === this.contact.id) {
-//     return true;
-//   }
-//   for(let i = 0; i <this.groupContacts.length; i++) {
-//     if(newContact.id === this.groupContacts[i].id) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
+isInvalidContact(newContact: Contact) {
+  if(!newContact) {
+    this.errorMessage = '';
+    return true;
+  }
+  if(this.contact && newContact.id === this.contact.id) {
+    this.errorMessage = "Cannot add this contact to their own group."
+    return true;
+  }
+  for(let i = 0; i <this.groupContacts.length; i++) {
+    if(newContact.id === this.groupContacts[i].id) {
+      this.errorMessage = "Cannot duplicate this contact to this group again."
+      return true;
+    }
+  }
+  this.errorMessage = '';
+  return false;
+}
+
+
+
+onRemoveItem(index: number) {
+  if (index < 0 || index >= this.groupContacts.length) {
+     return;
+  }
+  this.groupContacts.splice(index, 1);
+}
 
 }
