@@ -41,7 +41,7 @@
                 >
                 <div
                     cdkDrag
-                    *ngFor="let contact of contacts | ContactsFilterPipe: term"
+                    *ngFor="let contact of contacts | contactsFilter: term"
                     [cdkDragData]="contact">
                 <cms-contact-item
                     [contact] = "contact"
