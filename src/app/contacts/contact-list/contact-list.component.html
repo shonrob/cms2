@@ -1,10 +1,39 @@
 <!-- this file is the child to Contacts component  -->
 <!-- this file is also the parent file to the contact-item component.  -->
 <div class="panel panel-default">
-        <div class="panel-heading clearfix">
+        <!-- <div class="panel-heading clearfix">
           <h2 class="pull-left list-group-item-heading">Contacts</h2>
           <button class="btn btn-success pull-right" routerLink="new" >New Contact</button>
-        </div>
+        </div> -->
+        <div class="row">
+            <div class="col-xs-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <span class="title pad-left-right">Contacts</span>
+                  </div>
+                  <div class="row">
+                    <div class="input-group pull-left pad-left-right col-xs-7">
+                      <!-- Add the search box input field here -->
+                      <input 
+                        type="text" 
+                        id="searchBox" 
+                        #searchBox 
+                        (keyup)="search(searchBox.value)" 
+                        class="form-control"
+                        placeholder="Enter a Search Value"
+                        name="searchBox"
+                        [(ngModel)]="term">
+                      <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
+                    </div>
+                    <div class="pull-right pad-left-right">
+                      <a class="btn btn-success" [routerLink]="['new']">New Contact</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         <div class="panel-body">
             <div 
                 cdkDropList 
@@ -12,7 +41,7 @@
                 >
                 <div
                     cdkDrag
-                    *ngFor="let contact of contacts"
+                    *ngFor="let contact of contacts | ContactsFilterPipe: term"
                     [cdkDragData]="contact">
                 <cms-contact-item
                     [contact] = "contact"

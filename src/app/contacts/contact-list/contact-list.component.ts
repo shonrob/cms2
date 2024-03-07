@@ -14,6 +14,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
   // INITIALIZE CONTACT ARRAY
   contacts: Contact[] = [];
   contactId: string = '';
+  term: string;
 
   private clSubscription: Subscription;
 
@@ -31,6 +32,10 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clSubscription.unsubscribe();
+  }
+
+  search(value: string) {
+    this.term = value;
   }
   
 }

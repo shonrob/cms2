@@ -25,6 +25,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
 
 
 // import { ContactService } from './contacts/contact.service';
@@ -46,7 +47,8 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     MessageEditComponent,
     MessageListComponent,
     DocumentEditComponent,
-    ContactEditComponent
+    ContactEditComponent,
+    ContactsFilterPipe
   ],
   
   imports: [
