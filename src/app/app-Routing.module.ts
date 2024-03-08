@@ -1,40 +1,51 @@
-// ANGULAR IMPORTS 
-import { RouterModule, Routes } from "@angular/router";
-import { NgModule } from "@angular/core";
+// ANGULAR IMPORTS
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 
-// COMPONENT IMPORTS 
-import { DocumentsComponent } from "./documents/documents.component";
-import { MessagesComponent } from "./messages/messages.component";
-import { ContactsComponent } from "./contacts/contacts.component";
-import { MessageListComponent } from "./messages/message-list/message-list.component";
-import { DocumentEditComponent } from "./documents/document-edit/document-edit.component";
-import { DocumentDetailComponent } from "./documents/document-detail/document-detail.component";
-import { ContactEditComponent } from "./contacts/contact-edit/contact-edit.component";
-import { ContactDetailComponent } from "./contacts/contact-detail/contact-detail.component";
+// COMPONENT IMPORTS
+import { DocumentsComponent } from './documents/documents.component';
+import { MessagesComponent } from './messages/messages.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { MessageListComponent } from './messages/message-list/message-list.component';
+import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
+import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
+import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 
-// ESTABLISH ROUTES 
+// ESTABLISH ROUTES
 const appRoutes: Routes = [
-    {path: '', redirectTo: '/documents', pathMatch: 'full'},
-    {path: 'documents', component: DocumentsComponent, 
-        children: [
-            {path: 'new', component: DocumentEditComponent},
-            {path: ':id', component: DocumentDetailComponent},
-            {path: ':id/edit', component: DocumentEditComponent},
-        ]},
-    {path: 'messages', component: MessageListComponent},
-    {path: 'contacts', component: ContactsComponent,
-        children: [
-            {path: 'new', component: ContactEditComponent},
-            {path: ':id', component: ContactDetailComponent},
-            {path: ':id/edit', component: ContactEditComponent},
-        ] },
-]
+  { path: '', redirectTo: '/documents', pathMatch: 'full' },
+  {
+    path: 'documents',
+    component: DocumentsComponent,
+    children: [
+      { path: 'new', component: DocumentEditComponent },
+      { path: ':id', component: DocumentDetailComponent },
+      { path: ':id/edit', component: DocumentEditComponent },
+    ],
+  },
+  {
+    path: 'messages',
+    component: MessageListComponent,
+    children: [
+      { path: 'new', component: MessageEditComponent },
+      { path: ':id/edit', component: MessageEditComponent },
+    ],
+  },
+  {
+    path: 'contacts',
+    component: ContactsComponent,
+    children: [
+      { path: 'new', component: ContactEditComponent },
+      { path: ':id', component: ContactDetailComponent },
+      { path: ':id/edit', component: ContactEditComponent },
+    ],
+  },
+];
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule],
 })
-
-export class AppRoutingModule  {
-
-}
+export class AppRoutingModule {}

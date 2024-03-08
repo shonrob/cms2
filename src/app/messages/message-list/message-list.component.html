@@ -1,31 +1,29 @@
 <!-- parent to message-item  -->
 <div class="row">
-    <div class="col-md-5">
-       <div class="panel panel-default">
-          <div class="panel-heading">
-             <div class="row pad-left-right">
-                <span class="title pull-left">Messages</span>
-             </div>
-             <button class="btn btn-success">New Message</button>
+  <div class="col-md-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row pad-left-right">
+          <span class="title pull-left">Messages</span>
+        </div>
+        <!-- Not functioning currently...maybe one day  -->
+        <!-- <button class="btn btn-success" routerLink="new">New Message</button> -->
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <cms-message-item
+              *ngFor="let message of messages"
+              [message]="message"
+            >
+            </cms-message-item>
           </div>
-          <div class="panel-body">
-             <div class="row">
-                <div class="col-xs-12">
-                  <cms-message-item
-                     *ngFor="let message of messages"
-                     [message]="message"
-                     >
-                  </cms-message-item>
-                </div>
-             </div>
-          </div>
-          <div class="panel-footer">
-             <cms-message-edit 
-               (addMessageEvent)="onAddMessage($event)"
-               >
-            </cms-message-edit>
-          </div>
-       </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <cms-message-edit (addMessageEvent)="onAddMessage($event)">
+        </cms-message-edit>
+      </div>
     </div>
- </div>
-
+  </div>
+</div>

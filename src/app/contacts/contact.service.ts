@@ -2,90 +2,101 @@ import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
 import { Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ContactService  {
+export class ContactService {
+  //  INITIALIZE THE ARRAY
+  private contacts: Contact[] = [];
+  private maxContactId: number;
+  private apiUrl = 'https://srobcms-default-rtdb.firebaseio.com/contacts.json';
 
-    //  INITIALIZE THE ARRAY 
-    private contacts: Contact[] = [];
-    private maxContactId: number;
-
-
-  // CONSTRUCTOR 
-  constructor() {
-    this.contacts = MOCKCONTACTS; 
+  // CONSTRUCTOR
+  constructor(private httpClient: HttpClient) {
+    this.contacts = MOCKCONTACTS;
     this.maxContactId = this.getMaxContactId();
     // console.log(this.contacts);
-   }
+  }
 
-  // EVENTS 
-  // Create an event for contact service 
-  contactSelectedEvent = new EventEmitter<Contact>()
+  // EVENTS
+  // Create an event for contact service
+  contactSelectedEvent = new EventEmitter<Contact>();
 
-  // Change a contact 
-  contactChangedEvent = new EventEmitter<Contact[]>()
+  // Change a contact
+  contactChangedEvent = new EventEmitter<Contact[]>();
 
   // contactListChangedEvent = new Subject<Contact[]>()
 
-  //  METHODS 
+  //  METHODS
 
-  // method to get the max contact id 
+  // method to get the max contact id
   getMaxContactId() {
     let contactId = 0;
     this.contacts.forEach((contact) => {
       let currentId = parseInt(contact.id);
-      if( currentId > contactId) {
+      if (currentId > contactId) {
         contactId = currentId;
       }
     });
     return contactId;
   }
 
-   //This method returns a copy of the contact list
-   getContacts(): Contact[] {
-    return this.contacts.slice();
-   }
+  //This method returns a copy of the contact list
+  //  getContacts(): Contact[] {
+  //   return this.contacts.slice();
+  //  }
+  getContacts() {
+    this.httpClient.get(`${this.apiUrl}`).subscribe({
+      next: (contactsList: Contact[]) => {
+        this.contacts = contactsList;
+        this.maxContactId = this.getMaxContactId();
+        this.contacts.sort((a, b) => a.name.localeCompare(b.name));
+        const contactsListClone = this.contacts.slice();
+        this.contactChangedEvent.next(contactsListClone);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+    });
+  }
 
-  //  This method returns a contact that has a matching id. 
-   getaContact(id: string): Contact {
+  //  This method returns a contact that has a matching id.
+  getaContact(id: string): Contact {
     // console.log(this.contacts);
     // console.log(id);
 
     return this.contacts.find((theContact) => theContact.id === id);
-  
-   }
+  }
 
   //  method to add a new contact CALLED in the CONTACTEDITCOMPONENT WHEN SAVING CONTACT
-   addContact(newContact: Contact) {
-    if(!newContact) {
-      return 
+  addContact(newContact: Contact) {
+    if (!newContact) {
+      return;
     }
     this.maxContactId++;
     newContact.id = this.maxContactId.toString();
     this.contacts.push(newContact);
-    const contactListClone = this.contacts.slice();
-    this.contactChangedEvent.next(contactListClone);
-   }
+    this.storeContacts();
+  }
 
-// Method to delete a contact CALLED IN THE CONTACTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
-   deleteContact(contact: Contact) {
-    if(!contact) {
+  // Method to delete a contact CALLED IN THE CONTACTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
+  deleteContact(contact: Contact) {
+    if (!contact) {
       return;
     }
     const pos = this.contacts.indexOf(contact);
-    if(pos < 0) {
+    if (pos < 0) {
       return;
     }
     this.contacts.splice(pos, 1);
-    const contactsListClone = this.contacts.slice();
-    this.contactChangedEvent.next(contactsListClone);
-   }
+    this.storeContacts();
+  }
 
   //  method to update contacts CALLED in the CONTACTEDITCOMPONENT WHEN SAVING CHANGES
-   updateContact(orginalContact: Contact, newContact: Contact) {
-    if(!orginalContact || !newContact) {
+  updateContact(orginalContact: Contact, newContact: Contact) {
+    if (!orginalContact || !newContact) {
       return;
     }
     const pos = this.contacts.indexOf(orginalContact);
@@ -94,14 +105,23 @@ export class ContactService  {
     }
     newContact.id = orginalContact.id;
     this.contacts[pos] = newContact;
-    const contactsListClone = this.contacts.slice();
-    this.contactChangedEvent.next(contactsListClone);
-   }
+    this.storeContacts();
+  }
+
+  storeContacts() {
+    const contactString = JSON.stringify(this.contacts);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    this.httpClient
+      .put(`${this.apiUrl}`, contactString, httpOptions)
+      .subscribe({
+        next: () => {
+          const contactsListClone = this.contacts.slice();
+          this.contactChangedEvent.next(contactsListClone);
+        },
+      });
+  }
 }
-
-
-  //  onSelected(contact: Contact) {
-  //   // inside is the call...where the object contact is an argurment that is called to show up when clicked.
-  //   // this.selectedContactEvent.emit(contact);
-  //   this.contactSelectedEvent.emit(contact);
-  // }
