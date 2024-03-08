@@ -1,8 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
+
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Document } from './document.model';
-import { Subject } from 'rxjs';
+
+import { Observable, Subject } from 'rxjs';
+
 import { NgFor } from '@angular/common';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +16,10 @@ export class DocumentService {
   //Initialize the array
   private documents: Document[] = [];
   private maxDocumentId: number;
+  private apiUrl = 'https://srobcms-default-rtdb.firebaseio.com/documents.json';
 
   //create the constructor
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.documents = MOCKDOCUMENTS;
     this.maxDocumentId = this.getMaxId();
   }
@@ -42,8 +48,23 @@ export class DocumentService {
   }
 
   //method to get a copy of all the documents
-  getDocuments(): Document[] {
-    return this.documents.slice();
+  // getDocuments(): Document[] {
+  //   return this.documents.slice();
+  // }
+
+  getDocuments() {
+    this.httpClient.get(`${this.apiUrl}`).subscribe({
+      next: (documentsList: Document[]) => {
+        this.documents = documentsList;
+        this.maxDocumentId = this.getMaxId();
+        this.documents.sort((a, b) => a.name.localeCompare(b.name));
+        const documentsListClone = this.documents.slice();
+        this.documentChangedEvent.next(documentsListClone);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+    });
   }
 
   // method to get a single document
@@ -52,15 +73,14 @@ export class DocumentService {
   }
 
   // method to add a new document CALLED in the DOCUMENTEDITCOMPONENT WHEN SAVING DOCUMENT
-  addDocument(newDocument: Document){
-    if(!newDocument){
-      return
+  addDocument(newDocument: Document) {
+    if (!newDocument) {
+      return;
     }
     this.maxDocumentId++;
     newDocument.id = this.maxDocumentId.toString();
     this.documents.push(newDocument);
-    const documentsListClone = this.documents.slice();
-    this.documentChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   // method to delete a single document CALLED IN THE DOCUMENTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
@@ -73,8 +93,7 @@ export class DocumentService {
       return;
     }
     this.documents.splice(pos, 1);
-    const documentsListClone = this.documents.slice();
-    this.documentChangedEvent.next(documentsListClone);
+    this.storeDocuments();
   }
 
   // method to update a document CALLED in the DOCUMENTEDITCOMPONENT WHEN SAVING CHANGES
@@ -88,7 +107,21 @@ export class DocumentService {
     }
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
-    const documentsListClone = this.documents.slice();
-    this.documentChangedEvent.next(documentsListClone);
+    this.storeDocuments();
+  }
+
+  storeDocuments() {
+    const docString = JSON.stringify(this.documents);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    this.httpClient.put(`${this.apiUrl}`, docString, httpOptions).subscribe({
+      next: () => {
+        const documentsListClone = this.documents.slice();
+        this.documentChangedEvent.next(documentsListClone);
+      },
+    });
   }
 }

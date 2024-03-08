@@ -26,6 +26,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 
 // import { ContactService } from './contacts/contact.service';
@@ -48,14 +49,16 @@ import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
     MessageListComponent,
     DocumentEditComponent,
     ContactEditComponent,
-    ContactsFilterPipe
+    ContactsFilterPipe,
+  
   ],
   
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    DragDropModule
+    DragDropModule,
+    HttpClientModule
 
 
   ],
