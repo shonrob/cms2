@@ -1,4 +1,12 @@
 .panel-body {
-    height: 80vh;
-    overflow-y: auto;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.panel-heading {
+  padding: 1em;
+}
+
+div.row {
+  padding: 0.5em;
 }
