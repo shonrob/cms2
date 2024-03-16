@@ -25,7 +25,7 @@ export class MessageEditComponent {
   originalMessage: Message;
   message: Message;
 
-  currentSender: string = 'Shonda';
+  ShondaId: string = '21';
   editMode: boolean = false;
   id: string;
 
@@ -37,38 +37,28 @@ export class MessageEditComponent {
 
   // METHODS
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      let id = params['id'];
-      if (!id) {
-        this.editMode = false;
-        return;
-      }
-      this.originalMessage = this.messageService.getaMessage(id);
-      if (!this.originalMessage) {
-        return;
-      }
-      this.editMode = true;
-      this.message = JSON.parse(JSON.stringify(this.originalMessage));
-    });
-  }
+  // ngOnInit(): void {
+  //   this.route.params.subscribe((params: Params) => {
+  //     let id = params['id'];
+  //     if (!id) {
+  //       this.editMode = false;
+  //       return;
+  //     }
+  //     this.originalMessage = this.messageService.getaMessage(id);
+  //     if (!this.originalMessage) {
+  //       return;
+  //     }
+  //     this.editMode = true;
+  //     this.message = JSON.parse(JSON.stringify(this.originalMessage));
+  //   });
+  // }
 
   onSendMessage() {
     // const msgId = this.messageService.getNextId();
     const msgSubject = this.subjectInputRef.nativeElement.value;
     const msgText = this.msgTextInputRef.nativeElement.value;
-    const newMessage = new Message(
-      null,
-      msgSubject,
-      msgText,
-      this.currentSender
-    );
-    if (this.editMode) {
-      this.messageService.updateMessage(this.originalMessage, newMessage);
-    } else {
-      this.messageService.addMessage(newMessage);
-    }
-    this.router.navigate(['/messages']);
+    const newMessage = new Message(null, msgSubject, msgText, this.ShondaId);
+    this.messageService.addMessage(newMessage);
   }
 
   onClear() {

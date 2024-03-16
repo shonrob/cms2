@@ -32,6 +32,6 @@ export class MessageItemComponent {
 
   deleteMessage() {
     this.messageService.deleteMessage(this.message);
-    console.log('hello');
+    // console.log('hello');
   }
 }
