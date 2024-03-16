@@ -49,8 +49,40 @@ export class MessageService {
     return this.messages.find((theMessage) => theMessage.id === id);
   }
 
-  addMessage(messages: Message) {
-    this.messages.push(messages);
+  addMessage(newMessage: Message) {
+    if (!newMessage) {
+      return;
+    }
+    this.maxMessageId++;
+    newMessage.id = this.maxMessageId.toString();
+    this.messages.push(newMessage);
+    this.storeMessages();
+  }
+
+  // Method to delete a message CALLED IN THE MESSAGE DETAILCOMPONENT WHEN DELETE BUTTON IS USED
+  deleteMessage(message: Message) {
+    if (!message) {
+      return;
+    }
+    const pos = this.messages.indexOf(message);
+    if (pos < 0) {
+      return;
+    }
+    this.messages.splice(pos, 1);
+    this.storeMessages();
+  }
+
+  //  method to update message CALLED in the MESSAGE EDITCOMPONENT WHEN SAVING CHANGES
+  updateMessage(originalMessage: Message, newMessage: Message) {
+    if (!originalMessage || !newMessage) {
+      return;
+    }
+    const pos = this.messages.indexOf(originalMessage);
+    if (pos < 0) {
+      return;
+    }
+    newMessage.id = originalMessage.id;
+    this.messages[pos] = newMessage;
     this.storeMessages();
   }
 
