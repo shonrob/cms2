@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Message } from '../message.model';
 import { MessageService } from '../message.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'cms-message-edit',
@@ -21,11 +22,36 @@ export class MessageEditComponent {
   // eventEmitter to output the new message object up to the MessageListComponent
   @Output() addMessageEvent = new EventEmitter<Message>();
 
-  currentSender: string = 'Shonda';
+  originalMessage: Message;
+  message: Message;
 
-  constructor(private messageService: MessageService) {}
+  currentSender: string = 'Shonda';
+  editMode: boolean = false;
+  id: string;
+
+  constructor(
+    private messageService: MessageService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   // METHODS
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      let id = params['id'];
+      if (!id) {
+        this.editMode = false;
+        return;
+      }
+      this.originalMessage = this.messageService.getaMessage(id);
+      if (!this.originalMessage) {
+        return;
+      }
+      this.editMode = true;
+      this.message = JSON.parse(JSON.stringify(this.originalMessage));
+    });
+  }
 
   onSendMessage() {
     // const msgId = this.messageService.getNextId();
@@ -37,7 +63,12 @@ export class MessageEditComponent {
       msgText,
       this.currentSender
     );
-    this.messageService.addMessage(newMessage);
+    if (this.editMode) {
+      this.messageService.updateMessage(this.originalMessage, newMessage);
+    } else {
+      this.messageService.addMessage(newMessage);
+    }
+    this.router.navigate(['/messages']);
   }
 
   onClear() {

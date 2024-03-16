@@ -1,48 +1,44 @@
 <!-- child component to message list  -->
 <div class="panel panel-default">
-    <div class="panel-body">
-        <form id="document-edit">
-            <div class="row">
-                <div class="col-sm-12 form-group">
-                    <label for="subject" >Subject</label>
-                        <input
-                        type="text"
-                        id="subject"
-                        class="form-control"
-                        #subject
-                        size="120"
-                        max="120">
-                </div>
-    
-                <div class="col-sm-12 form-group">
-                    <label for="message" >Message</label>
-                        <input
-                        type="text"
-                        id="message"
-                        class="form-control"
-                        #msgText
-                        max="255"
-                        size="120">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <a
-                        class="btn btn-success" 
-                        type="submit" 
-                        (click)="onSendMessage()"
-                        >
-                        Send
-                    </a>
-                    <a 
-                        class="btn btn-danger" 
-                        type="button" 
-                        (click)="onClear()"
-                        >
-                        Clear
-                    </a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div> 
+  <div class="panel-body">
+    <form id="document-edit">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            class="form-control"
+            size="120"
+            max="120"
+            [ngModel]="message?.subject"
+            #subject="ngModel"
+          />
+        </div>
+
+        <div class="col-sm-12 form-group">
+          <label for="message">Message</label>
+          <input
+            type="text"
+            id="message"
+            class="form-control"
+            max="255"
+            size="120"
+            [ngModel]="message?.msgText"
+            #msgText="ngModel"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <a class="btn btn-success" type="submit" (click)="onSendMessage()">
+            Send
+          </a>
+          <a class="btn btn-danger" type="button" (click)="onClear()">
+            Clear
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
