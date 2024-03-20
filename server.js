@@ -34,8 +34,8 @@ var index = require("./server/routes/app");
 
 // ... ADD CODE TO IMPORT YOUR ROUTING FILES HERE ...
 const messageRoutes = require("./server/routes/messages");
-const documentsRoutes = require("./server/routes/documents");
-const contactsRoutes = require("./server/routes/contacts");
+const documentRoutes = require("./server/routes/documents");
+const contactRoutes = require("./server/routes/contacts");
 
 var app = express(); // create an instance of express
 

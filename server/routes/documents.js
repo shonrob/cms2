@@ -10,12 +10,18 @@ const Document = require("../models/document");
 
 // GET
 router.get("/", async (req, res, next) => {
-  const documents = await Document.find();
-  if (err) {
-    return res.status(500).json({ error: err.message });
-  } else {
-    return res.status(200).json({ documents });
+  try {
+    const documents = await Document.find();
+    res.status(200).json({ documents });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+
+  //   if (err) {
+  //     return res.status(500).json({ error: err.message });
+  //   } else {
+  //     return res.status(200).json({ documents });
+  //   }
 });
 
 // POST
