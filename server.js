@@ -6,6 +6,29 @@ var http = require("http");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+var mongoose = require("mongoose");
+
+mongoose
+  .connect(
+    "mongodb+srv://rob19063:9NcrirX2Nzife0nH@cluster0.9tm6oqh.mongodb.net/cms"
+  )
+  .then(() => {
+    console.log("Connected to the database");
+  })
+  .catch(() => {
+    console.log("Connection Failed, Sorry");
+  });
+
+// ,
+//   { useNewUrlsParser: true },
+//   (err, res) => {
+//     if (err) {
+//       console.log("Connection failed: " + err);
+//     } else {
+//       console.log("Connected to Database");
+//     }
+//   }
+
 // import the routing file to handle the default (index) route
 var index = require("./server/routes/app");
 
@@ -51,9 +74,9 @@ app.use(express.static(path.join(__dirname, "./dist/cms2/browser")));
 app.use("/", index);
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
-// app.use("/messages", messageRoutes);
-// app.use("/documents", documentRoutes);
-// app.use("/contacts", contactRoutes);
+app.use("/messages.js", messageRoutes);
+app.use("/documents.js", documentRoutes);
+app.use("/contacts", contactRoutes);
 
 // Tell express to map all other non-defined routes back to the index page
 app.get("*", (req, res) => {
