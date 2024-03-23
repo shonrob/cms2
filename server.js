@@ -60,8 +60,8 @@ app.use(express.static(path.join(__dirname, "./dist/cms2/browser")));
 app.use("/", index);
 
 // ... ADD YOUR CODE TO MAP YOUR URL'S TO ROUTING FILES HERE ...
-app.use("/messages.js", messageRoutes);
-app.use("/documents.js", documentRoutes);
+app.use("/messages", messageRoutes);
+app.use("/documents", documentRoutes);
 app.use("/contacts", contactRoutes);
 
 // Tell express to map all other non-defined routes back to the index page
