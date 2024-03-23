@@ -11,7 +11,7 @@ export class ContactService {
   //  INITIALIZE THE ARRAY
   private contacts: Contact[] = [];
   private maxContactId: number;
-  private apiUrl = 'https://srobcms-default-rtdb.firebaseio.com/contacts.json';
+  private apiUrl = 'https://srobcms-default-rtdb.noio.com/contacts.json';
 
   // CONSTRUCTOR
   constructor(private httpClient: HttpClient) {

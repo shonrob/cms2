@@ -16,7 +16,11 @@ export class DocumentService {
   //Initialize the array
   private documents: Document[] = [];
   private maxDocumentId: number;
-  private apiUrl = 'https://srobcms-default-rtdb.firebaseio.com/documents.json';
+  private apiUrl = 'http://localhost:3000/documents';
+
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
 
   //create the constructor
   constructor(private httpClient: HttpClient) {
@@ -77,51 +81,95 @@ export class DocumentService {
     if (!newDocument) {
       return;
     }
-    this.maxDocumentId++;
-    newDocument.id = this.maxDocumentId.toString();
-    this.documents.push(newDocument);
-    this.storeDocuments();
+    // this.maxDocumentId++;
+    newDocument.id = '';
+    this.httpClient
+      .post<{ message: string; document: Document }>(
+        'http://localhost:3000/documents',
+        document,
+        { headers: this.headers }
+      )
+      .subscribe((responseData) => {
+        // add new document to documents
+        this.documents.push(responseData.document);
+        // this.sortAndSend();
+      });
   }
 
   // method to delete a single document CALLED IN THE DOCUMENTDETAILCOMPONENT WHEN DELETE BUTTON IS USED
+
   deleteDocument(document: Document) {
     if (!document) {
       return;
     }
-    const pos = this.documents.indexOf(document);
+
+    const pos = this.documents.findIndex((d) => d.id === document.id);
+
     if (pos < 0) {
       return;
     }
-    this.documents.splice(pos, 1);
-    this.storeDocuments();
+
+    // delete from database
+    this.httpClient
+      .delete('http://localhost:3000/documents/' + document.id)
+      .subscribe((response: Response) => {
+        this.documents.splice(pos, 1);
+        // this.sortAndSend();
+      });
   }
 
   // method to update a document CALLED in the DOCUMENTEDITCOMPONENT WHEN SAVING CHANGES
+  // updateDocument(originalDocument: Document, newDocument: Document) {
+  //   if (!originalDocument || !newDocument) {
+  //     return;
+  //   }
+  //   const pos = this.documents.indexOf(originalDocument);
+  //   if (pos < 0) {
+  //     return;
+  //   }
+  //   newDocument.id = originalDocument.id;
+  //   this.documents[pos] = newDocument;
+  //   this.storeDocuments();
+  // }
+
   updateDocument(originalDocument: Document, newDocument: Document) {
     if (!originalDocument || !newDocument) {
       return;
     }
-    const pos = this.documents.indexOf(originalDocument);
+
+    const pos = this.documents.findIndex((d) => d.id === originalDocument.id);
+
     if (pos < 0) {
       return;
     }
+
+    // set the id of the new Document to the id of the old Document
     newDocument.id = originalDocument.id;
-    this.documents[pos] = newDocument;
-    this.storeDocuments();
+    newDocument._id = originalDocument._id;
+
+    // update database
+    this.httpClient
+      .put(
+        'http://localhost:3000/documents/' + originalDocument.id,
+        newDocument,
+        { headers: this.headers }
+      )
+      .subscribe((response: Response) => {
+        this.documents[pos] = newDocument;
+        // this.sortAndSend();
+      });
   }
 
-  storeDocuments() {
-    const docString = JSON.stringify(this.documents);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
-    this.httpClient.put(`${this.apiUrl}`, docString, httpOptions).subscribe({
-      next: () => {
-        const documentsListClone = this.documents.slice();
-        this.documentChangedEvent.next(documentsListClone);
-      },
-    });
-  }
+  // sortAndSend() {
+  //   const docString = JSON.stringify(this.documents);
+  //   const httpOptions = {
+  //     headers: this.headers,
+  //   };
+  //   this.httpClient.put(`${this.apiUrl}`, docString, httpOptions).subscribe({
+  //     next: () => {
+  //       const documentsListClone = this.documents.slice();
+  //       this.documentChangedEvent.next(documentsListClone);
+  //     },
+  //   });
+  // }
 }

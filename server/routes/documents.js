@@ -3,11 +3,10 @@ var router = express.Router();
 
 // Bringing in the route sequenceGenerator
 const sequenceGenerator = require("./sequenceGenerator");
-// Brining in the model Document
+// Bringing in the model Document
 const Document = require("../models/document");
 
 // METHODS
-
 // GET
 router.get("/", async (req, res, next) => {
   try {
@@ -16,12 +15,6 @@ router.get("/", async (req, res, next) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
-  //   if (err) {
-  //     return res.status(500).json({ error: err.message });
-  //   } else {
-  //     return res.status(200).json({ documents });
-  //   }
 });
 
 // POST
@@ -52,7 +45,6 @@ router.post("/", (req, res, next) => {
 });
 
 // PUT
-
 router.put("/:id", (req, res, next) => {
   Document.findOne({ id: req.params.id })
     .then((document) => {
