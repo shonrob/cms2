@@ -6,27 +6,27 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'cms-documents',
   templateUrl: './documents.component.html',
-  styleUrl: './documents.component.css'
+  styleUrl: './documents.component.css',
 })
 export class DocumentsComponent implements OnInit, OnDestroy {
-
-  // INITIALIZE 
+  // INITIALIZE
   selectedDocument: Document;
   private subscription: Subscription;
 
-  // CONSTRUCTOR 
+  // CONSTRUCTOR
   constructor(private documentService: DocumentService) {}
-  
 
-  // METHODS 
+  // METHODS
   ngOnInit(): void {
-    this.subscription = this.documentService.documentSelectedEvent.subscribe((document: Document) => {
-      this.selectedDocument = document;
-    })
+    // this.documentService.getDocuments();
+    this.subscription = this.documentService.documentSelectedEvent.subscribe(
+      (document: Document) => {
+        this.selectedDocument = document;
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 }

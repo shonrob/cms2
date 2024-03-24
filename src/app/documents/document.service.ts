@@ -16,7 +16,7 @@ export class DocumentService {
   //Initialize the array
   private documents: Document[] = [];
   private maxDocumentId: number;
-  private apiUrl = 'http://localhost:3000/documents';
+  private apiUrl = 'http://localhost:3000/server/documents';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -25,7 +25,6 @@ export class DocumentService {
   //create the constructor
   constructor(private httpClient: HttpClient) {
     this.documents = MOCKDOCUMENTS;
-    this.maxDocumentId = this.getMaxId();
   }
 
   // EVENTS
@@ -40,30 +39,24 @@ export class DocumentService {
   // METHODS
 
   // method to get the maxId
-  getMaxId() {
-    let maxId = 0;
-    this.documents.forEach((doc) => {
-      let currentId = parseInt(doc.id);
-      if (currentId > maxId) {
-        maxId = currentId;
-      }
-    });
-    return maxId;
-  }
-
-  //method to get a copy of all the documents
-  // getDocuments(): Document[] {
-  //   return this.documents.slice();
+  // getMaxId() {
+  //   let maxId = 0;
+  //   this.documents.forEach((doc) => {
+  //     let currentId = parseInt(doc.id);
+  //     if (currentId > maxId) {
+  //       maxId = currentId;
+  //     }
+  //   });
+  //   return maxId;
   // }
 
   getDocuments() {
     this.httpClient.get(`${this.apiUrl}`).subscribe({
       next: (documentsList: Document[]) => {
         this.documents = documentsList;
-        this.maxDocumentId = this.getMaxId();
-        this.documents.sort((a, b) => a.name.localeCompare(b.name));
-        const documentsListClone = this.documents.slice();
-        this.documentChangedEvent.next(documentsListClone);
+        console.log(documentsList);
+        // this.sortAndSend(documentsList);
+        // this.maxDocumentId = this.getMaxId();
       },
       error: (error: any) => {
         console.error(error);
@@ -71,6 +64,11 @@ export class DocumentService {
     });
   }
 
+  sortAndSend(docList = this.documents) {
+    docList.sort((a, b) => a.name.localeCompare(b.name));
+    const documentsListClone = docList.slice();
+    this.documentChangedEvent.next(documentsListClone);
+  }
   // method to get a single document
   getaDocument(id: string): Document {
     return this.documents.find((theDocument) => theDocument.id === id);
@@ -84,15 +82,13 @@ export class DocumentService {
     // this.maxDocumentId++;
     newDocument.id = '';
     this.httpClient
-      .post<{ message: string; document: Document }>(
-        'http://localhost:3000/documents',
-        document,
-        { headers: this.headers }
-      )
+      .post<{ message: string; document: Document }>(this.apiUrl, document, {
+        headers: this.headers,
+      })
       .subscribe((responseData) => {
         // add new document to documents
         this.documents.push(responseData.document);
-        // this.sortAndSend();
+        this.sortAndSend();
       });
   }
 
@@ -111,10 +107,10 @@ export class DocumentService {
 
     // delete from database
     this.httpClient
-      .delete('http://localhost:3000/documents/' + document.id)
+      .delete(`${this.apiUrl}/` + document.id)
       .subscribe((response: Response) => {
         this.documents.splice(pos, 1);
-        // this.sortAndSend();
+        this.sortAndSend();
       });
   }
 
@@ -156,7 +152,7 @@ export class DocumentService {
       )
       .subscribe((response: Response) => {
         this.documents[pos] = newDocument;
-        // this.sortAndSend();
+        this.sortAndSend();
       });
   }
 

@@ -9,19 +9,20 @@ const Contact = require("../models/contact");
 // METHODS
 
 // GET
-router.get("/", async (req, res, next) => {
-  try {
-    const contacts = await Contact.find();
-    contacts.populate("group").then((contacts) => {
-      res.status(200).json({
-        message: "Contacts fetched successfully!",
-        contacts: contacts,
+router.get("/"),
+  (req, res, next) => {
+    Contact.find()
+      .populate("group")
+      .then((contacts) => {
+        res.status(200).json({
+          message: "Contacts were fetched successfully",
+          contacts: contacts,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({ message: "An Error Occured", error: error });
       });
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  };
 
 // POST
 router.post("/", (req, res, next) => {
