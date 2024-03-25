@@ -1,4 +1,4 @@
-<div *ngIf="!!documents" class="panel panel-default">
+<div class="panel panel-default">
   <div class="panel-heading">
     <div class="row pad-left-right">
       <span class="pull-left title">Documents</span>
@@ -7,6 +7,7 @@
   </div>
   <div class="panel-body">
     <div class="center-panel">
+      <h1>HelloWorld</h1>
       <cms-document-item
         *ngFor="let document of documents; let i = index"
         [document]="document"

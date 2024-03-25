@@ -52,10 +52,10 @@ export class DocumentService {
 
   getDocuments() {
     this.httpClient.get(`${this.apiUrl}`).subscribe({
-      next: (documentsList: Document[]) => {
-        this.documents = documentsList;
+      next: (documentsList: any) => {
+        this.documents = documentsList.documents;
         console.log(documentsList);
-        // this.sortAndSend(documentsList);
+        this.sortAndSend(this.documents);
         // this.maxDocumentId = this.getMaxId();
       },
       error: (error: any) => {

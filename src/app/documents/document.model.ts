@@ -8,5 +8,3 @@ export class Document {
     public children?: Document[]
   ) {}
 }
-
-// public description: string,

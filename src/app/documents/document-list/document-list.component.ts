@@ -1,13 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cms-document-list',
@@ -40,8 +34,4 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
-  // onSelectedDocument(document: Document) {
-  //   this.documentService.documentSelectedEvent.emit(document);
-  // }
 }
