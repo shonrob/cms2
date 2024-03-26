@@ -11,11 +11,11 @@ export class ContactService {
   //  INITIALIZE THE ARRAY
   private contacts: Contact[] = [];
   private maxContactId: number;
-  private apiUrl = 'https://srobcms-default-rtdb.noio.com/contacts.json';
+  private apiUrl = 'http://localhost:3000/server/contacts';
 
   // CONSTRUCTOR
   constructor(private httpClient: HttpClient) {
-    this.contacts = MOCKCONTACTS;
+    // this.contacts = MOCKCONTACTS;
     this.maxContactId = this.getMaxContactId();
     // console.log(this.contacts);
   }
@@ -43,23 +43,23 @@ export class ContactService {
     return contactId;
   }
 
-  //This method returns a copy of the contact list
-  //  getContacts(): Contact[] {
-  //   return this.contacts.slice();
-  //  }
   getContacts() {
-    this.httpClient.get(`${this.apiUrl}`).subscribe({
-      next: (contactsList: Contact[]) => {
-        this.contacts = contactsList;
-        this.maxContactId = this.getMaxContactId();
-        this.contacts.sort((a, b) => a.name.localeCompare(b.name));
-        const contactsListClone = this.contacts.slice();
-        this.contactChangedEvent.next(contactsListClone);
+    this.httpClient.get<Contact[]>(`${this.apiUrl}`).subscribe({
+      next: (contactsList: any) => {
+        this.contacts = contactsList.contacts;
+        console.log(contactsList);
+        // this.maxContactId = this.getMaxContactId();
+        this.sortAndSend(this.contacts);
       },
       error: (error: any) => {
         console.error(error);
       },
     });
+  }
+  sortAndSend(contactList = this.contacts) {
+    contactList.sort((a, b) => a.name.localeCompare(b.name));
+    const contactsListClone = contactList.slice();
+    this.contactChangedEvent.next(contactsListClone);
   }
 
   //  This method returns a contact that has a matching id.

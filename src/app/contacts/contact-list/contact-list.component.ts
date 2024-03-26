@@ -33,6 +33,7 @@ export class ContactListComponent implements OnInit, OnDestroy {
         this.contacts = contact;
       }
     );
+    // console.log(this.contacts);
   }
 
   ngOnDestroy(): void {

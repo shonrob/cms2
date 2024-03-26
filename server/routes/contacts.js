@@ -9,11 +9,32 @@ const Contact = require("../models/contact");
 // METHODS
 
 // GET
+// router.get("/", async (req, res, next) => {
+//   try {
+//     const contactsObject = await Contact.find();
+//     const contacts = contactsObject.List;
+//     if (!Array.isArray(contacts)) {
+//       throw new Error("Contacts list is not an array");
+//     }
+//     const contactsMappedToGroup = {};
+//     contacts.foreach((contact) => {
+//       if (!contactsMappedToGroup[contact.group]) {
+//         contactsMappedToGroup[contact.group] = [];
+//       }
+//       contactsMappedToGroup[contact.group].push[contact];
+//     });
+//     res.status(200).json(contactsMappedToGroup);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 router.get("/"),
   (req, res, next) => {
     Contact.find()
       .populate("group")
       .then((contacts) => {
+        console.log("Here I am");
+        console.log(contacts);
         res.status(200).json({
           message: "Contacts were fetched successfully",
           contacts: contacts,

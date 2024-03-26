@@ -5,52 +5,85 @@ var maxMessageId;
 var maxContactId;
 var sequenceId = null;
 
-function SequenceGenerator() {
-  Sequence.findOne().exec(function (err, sequence) {
-    if (err) {
-      return res.status(500).json({
-        title: "An error occurred",
-        error: err,
-      });
+const sequenceGenerator = {
+  async init() {
+    try {
+      const sequence = await Sequence.findOne({}).exec(); //"exec()" here has to do with Mongoose and async functions. Not sure if it's entirely necessary, but it works with it in there.
+      if (!sequence) {
+        throw new Error("Sequence not found");
+      }
+      sequenceId = sequence._id;
+      // maxDocumentId = sequence.maxDocumentId;
+      // maxMessageId = sequence.maxMessageId;
+      // maxContactId = sequence.maxContactId;
+    } catch (err) {
+      console.error("Error initializing SequenceGenerator:", err);
+      throw err;
     }
+  },
+  async nextId(collectionType) {
+    // Ensure the generator is initialized. If not, call the init() function above.
+    if (!this.sequenceId) {
+      await this.init();
+    }
+    let updateObject = {};
+    let nextId;
 
-    sequenceId = sequence._id;
-    maxDocumentId = sequence.maxDocumentId;
-    maxMessageId = sequence.maxMessageId;
-    maxContactId = sequence.maxContactId;
-  });
-}
+    try {
+      switch (collectionType) {
+        case "documents":
+          maxDocumentId++;
+          updateObject = { maxDocumentId: maxDocumentId };
+          nextId = maxDocumentId;
+          break;
+        case "messages":
+          maxMessageId++;
+          updateObject = { maxMessageId: maxMessageId };
+          nextId = maxMessageId;
+          break;
+        case "contacts":
+          maxContactId++;
+          updateObject = { maxContactId: maxContactId };
+          nextId = maxContactId;
+          break;
+        default:
+          return -1;
+      }
 
-SequenceGenerator.prototype.nextId = function (collectionType) {
-  var updateObject = {};
-  var nextId;
-
-  switch (collectionType) {
-    case "documents":
-      maxDocumentId++;
-      updateObject = { maxDocumentId: maxDocumentId };
-      nextId = maxDocumentId;
-      break;
-    case "messages":
-      maxMessageId++;
-      updateObject = { maxMessageId: maxMessageId };
-      nextId = maxMessageId;
-      break;
-    case "contacts":
-      maxContactId++;
-      updateObject = { maxContactId: maxContactId };
-      nextId = maxContactId;
-      break;
-    default:
-      return -1;
-  }
-
-  Sequence.update({ _id: sequenceId }, { $set: updateObject }, function (err) {
-    if (err) {
+      await Sequence.updateOne({ _id: sequenceId }, { $set: updateObject });
+      return nextId;
+    } catch (err) {
       console.log("nextId error = " + err);
       return null;
     }
-  });
+  },
 
-  return nextId;
+  async nextDocumentId() {
+    const sequence = await Sequence.findOneAndUpdate(
+      {},
+      { $inc: { maxDocumentId: 1 } },
+      { new: true }
+    );
+    return sequence.maxDocumentId;
+  },
+
+  async nextMessageId() {
+    const sequence = await Sequence.findOneAndUpdate(
+      {},
+      { $inc: { maxMessageId: 1 } },
+      { new: true }
+    );
+    return sequence.maxMessageId;
+  },
+
+  async nextContactId() {
+    const sequence = await Sequence.findOneAndUpdate(
+      {},
+      { $inc: { maxContactId: 1 } },
+      { new: true }
+    );
+    return sequence.maxContactId;
+  },
 };
+
+module.exports = sequenceGenerator;

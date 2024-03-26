@@ -3,10 +3,11 @@ var router = express.Router();
 
 // Bringing in the route sequenceGenerator
 const sequenceGenerator = require("./sequenceGenerator");
-// Bringing in the model Document
+// Brining in the model Document
 const Document = require("../models/document");
 
 // METHODS
+
 // GET
 router.get("/", async (req, res, next) => {
   try {
@@ -18,31 +19,54 @@ router.get("/", async (req, res, next) => {
 });
 
 // POST
-router.post("/", (req, res, next) => {
-  const maxDocumentId = sequenceGenerator.nextId("documents");
-
-  const document = new Document({
-    id: maxDocumentId,
-    name: req.body.name,
-    description: req.body.description,
-    url: req.body.url,
-  });
-
-  document
-    .save()
-    .then((createdDocument) => {
-      res.status(201).json({
-        message: "Document added successfully",
+router.post("/:id", async (req, res, next) => {
+  try {
+    const maxDocumentId = await sequenceGenerator.nextId("documents");
+    const document = new Document({
+      id: maxDocumentId,
+      name: req.body.name,
+      description: req.body.description,
+      url: req.body.url,
+    });
+    console.log(document);
+    document.save().then((createdDocument) => {
+      return res.status(201).json({
+        message: "Document added successfully.",
         document: createdDocument,
       });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "An error occurred",
-        error: error,
-      });
     });
+  } catch (error) {
+    return res.status(500).json({
+      message: "An error occurred saving the document.",
+      error: error,
+    });
+  }
 });
+// router.post("/", (req, res, next) => {
+//   const maxDocumentId = sequenceGenerator.nextId("documents");
+
+//   const document = new Document({
+//     id: maxDocumentId,
+//     name: req.body.name,
+//     description: req.body.description,
+//     url: req.body.url,
+//   });
+
+//   document
+//     .save()
+//     .then((createdDocument) => {
+//       res.status(201).json({
+//         message: "Document added successfully",
+//         document: createdDocument,
+//       });
+//     })
+//     .catch((error) => {
+//       res.status(500).json({
+//         message: "An error occurred",
+//         error: error,
+//       });
+//     });
+// });
 
 // PUT
 router.put("/:id", (req, res, next) => {

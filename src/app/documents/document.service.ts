@@ -25,6 +25,7 @@ export class DocumentService {
   //create the constructor
   constructor(private httpClient: HttpClient) {
     this.documents = MOCKDOCUMENTS;
+    this.maxDocumentId = this.getMaxId();
   }
 
   // EVENTS
@@ -39,16 +40,16 @@ export class DocumentService {
   // METHODS
 
   // method to get the maxId
-  // getMaxId() {
-  //   let maxId = 0;
-  //   this.documents.forEach((doc) => {
-  //     let currentId = parseInt(doc.id);
-  //     if (currentId > maxId) {
-  //       maxId = currentId;
-  //     }
-  //   });
-  //   return maxId;
-  // }
+  getMaxId() {
+    let maxId = 0;
+    this.documents.forEach((doc) => {
+      let currentId = parseInt(doc.id);
+      if (currentId > maxId) {
+        maxId = currentId;
+      }
+    });
+    return maxId;
+  }
 
   getDocuments() {
     this.httpClient.get(`${this.apiUrl}`).subscribe({
